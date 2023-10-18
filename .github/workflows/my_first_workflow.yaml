@@ -20,6 +20,25 @@ jobs:
         id: list_directory
         run: echo "$(ls -l)"
 
+      - name: fail the job
+        id: fail_the_job
+        #run "exit 1" below to see how the workflow breaks at this step
+        run: exit 0
+
       - name: echo GitHub context
         id: echo_GitHub_context
         run: echo "ref_name ${{ github.ref_name }}\n repository ${{github.repository}}\n owner ${{github.repository_owner}}"
+
+      - name: send email
+        id: send_email
+        uses: dawidd6/action-send-mail@v3
+        with: 
+          server_address: ${{secrets.EMAIL_SERVER}}
+          server_port: ${{secrets.EMAIL_PORT}}
+          username: ${{secrets.EMAIL_USER}}
+          password: ${{secrets.EMAIL_PASSWORD}}
+          to: 47d54242-6e75-4055-bed5-f9578dc77555@mailslurp.mx
+          from: e1287867@u.nus.edu
+          subject: "GitHub workflow from ${{github.ref_name}}"
+          body: "The job is ${{job.status}}"
+      

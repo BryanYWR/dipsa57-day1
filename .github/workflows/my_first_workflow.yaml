@@ -19,3 +19,7 @@ jobs:
       - name: list directory
         id: list_directory
         run: echo "$(ls -l)"
+
+      - name: echo GitHub context
+        id: echo_GitHub_context
+        run: "ref_name ${{ github.ref_name }}\n repository ${{github.repository}}\n owner ${{github.owner}}"
